@@ -1,14 +1,11 @@
-// Deck, plain JS constructor
+/* Deck Class */
 function Deck (includeJokers) {    
-    /* Begin Constructor */
-    setupDeck(includeJokers);
     this.shuffle = shuffleDeck;
     this.shuffleStyle = 'default';
     this.cardsLeft = cardsLeft;
     this.hasJokers = hasJokers;
     this.dealCard = dealCard;
-    /* End constructor */
-
+    setupDeck(includeJokers);
 
     // private attributes
     var deck; // array of 52-54 cards (54 for including jokers)
@@ -25,12 +22,14 @@ function Deck (includeJokers) {
     }
     function setupDeck(includeJokers) {
         if (includeJokers){
-            deck =  new Card(54);
+            console.log('configuring deck');
+            deck = new Array(54);
             deck[52]= new Card(1, Card.JOKER);
             deck[53]= new Card(2, Card.JOKER);
         }
         else { 
-            deck =  new Card(52); }
+            deck =  new Array(52);
+        }
         cardCount = 0;
         for (var suit = 0; suit <= 3; suit++ ) {
             for (var value = 1; value <= 13; value++ ) {
@@ -88,24 +87,21 @@ function Card(configuration) {
     const HEARTS = 1;
     const SPADES = 0;
 
-    const suit;
-    const value;
-
-    this.KING = KING;
-    this.QUEEN = QUEEN;
-    this.JACK = JACK;
-    this.ACE = ACE;
-    this.JOKER = JOKER;
-    this.CLUBS = CLUBS;
-    this.DIAMONDS = DIAMONDS;
-    this.HEART = HEART;
-    this.SPADES = SPADES;
+    this.KING = function() { return KING; };
+    this.QUEEN = function() { return QUEEN; };
+    this.JACK = function() { return JACK; };
+    this.ACE = function() { return ACE; };
+    this.JOKER = function() { return JOKER; };
+    this.CLUBS = function() { return CLUBS; };
+    this.DIAMONDS = function() { return DIAMONDS; };
+    this.HEART = function() { return HEART; };
+    this.SPADES = function() { return SPADES; };
     this.getSuit = getSuit;
     this.getValue = getValue;
     this.getSuitAsString = getSuitAsString;
     this.getValueAsString = getValueAsString;
     this.toString = toString;
-    setupCards(configuration);
+    setupCards(this.configuration);
 
     // helper functions
     function getSuit(){ return suit; }
@@ -153,6 +149,7 @@ function Card(configuration) {
     }
     function setupCards(config) {
         if (config) {
+            console.log('configuring cards');
             if (config.suit != SPADES && config.suit != HEARTS && config.suit != DIAMONDS && 
                 config.suit != CLUBS && config.suit != JOKER)
                 console.log("Illegal playing card suit");
@@ -162,8 +159,9 @@ function Card(configuration) {
             suit = config.suit;
         }
         else {
-            suit = JOKER;
-            value = 1;
+            // Initialize instance private values
+            const suit = JOKER;
+            const value = 1;
         }
     }
 
