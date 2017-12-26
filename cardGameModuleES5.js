@@ -1,14 +1,12 @@
-// Deck, plain JS constructor
+/* Deck Class */
 function Deck (includeJokers) {    
     /* Begin Constructor */
-    setupDeck(includeJokers);
     this.shuffle = shuffleDeck;
     this.shuffleStyle = 'default';
     this.cardsLeft = cardsLeft;
     this.hasJokers = hasJokers;
     this.dealCard = dealCard;
-    /* End constructor */
-
+    setupDeck(includeJokers);
 
     // private attributes
     var deck; // array of 52-54 cards (54 for including jokers)
@@ -25,12 +23,14 @@ function Deck (includeJokers) {
     }
     function setupDeck(includeJokers) {
         if (includeJokers){
-            deck =  new Card(54);
+            console.log('configuring deck');
+            deck = new Array(54);
             deck[52]= new Card(1, Card.JOKER);
             deck[53]= new Card(2, Card.JOKER);
         }
         else { 
-            deck =  new Card(52); }
+            deck =  new Array(52);
+        }
         cardCount = 0;
         for (var suit = 0; suit <= 3; suit++ ) {
             for (var value = 1; value <= 13; value++ ) {
@@ -88,8 +88,21 @@ function Card(configuration) {
     const HEARTS = 1;
     const SPADES = 0;
 
-    const suit;
-    const value;
+    this.KING = function() { return KING; };
+    this.QUEEN = function() { return QUEEN; };
+    this.JACK = function() { return JACK; };
+    this.ACE = function() { return ACE; };
+    this.JOKER = function() { return JOKER; };
+    this.CLUBS = function() { return CLUBS; };
+    this.DIAMONDS = function() { return DIAMONDS; };
+    this.HEART = function() { return HEART; };
+    this.SPADES = function() { return SPADES; };
+    this.getSuit = getSuit;
+    this.getValue = getValue;
+    this.getSuitAsString = getSuitAsString;
+    this.getValueAsString = getValueAsString;
+    this.toString = toString;
+    setupCards(this.configuration);
 
     this.KING = KING;
     this.QUEEN = QUEEN;
@@ -108,6 +121,16 @@ function Card(configuration) {
     // helper functions
     function getSuit(){ return suit; }
     function getValue(){ return value; }
+    function toString() { 
+        if (suit == JOKER) {
+            if (value == 1) {
+                return "Joker";
+            }
+            else { 
+                return getValueAsString() + " of " + getSuitAsString();
+            }
+        }
+    }
     function getSuitAsString(){ 
         switch(suit){
             case SPADES: return "Spades";
@@ -116,7 +139,33 @@ function Card(configuration) {
             case CLUBS: return "Clubs";
             default: return "Joker";
         }
-     }
+    }
+    function getValueAsString() {
+        if (suit == JOKER){
+            return "" + value; // necessary?
+        }
+        else {
+            switch(value) {
+                case 1: return "Ace";
+                case 2: return "2";
+                case 3: return "3";
+                case 4: return "4";
+                case 5: return "5";
+                case 6: return "6";
+                case 7: return "7";
+                case 8: return "8";
+                case 9: return "9";
+                case 10: return "10";
+                case 11: return "11";
+                case 12: return "12";
+                default: return "King";
+            }
+        }
+    }
+    function setupCards(config) {
+        if (config) {
+            console.log('configuring cards');
+    }
     function setupCards(config) {
         if (config) {
             if (config.suit != SPADES && config.suit != HEARTS && config.suit != DIAMONDS && 
@@ -124,12 +173,13 @@ function Card(configuration) {
                 console.log("Illegal playing card suit");
             if (config.suit != JOKER && (config.suit < 1 || config.suit > 13))
                 console.log("Illegal playing card value");
-            value = config.value;
-            suit = config.suit;
+            const value = config.value;
+            const suit = config.suit;
         }
         else {
-            suit = JOKER;
-            value = 1;
+            // Initialize instance private values
+            const suit = JOKER;
+            const value = 1;
         }
     }
 
