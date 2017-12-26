@@ -1,5 +1,6 @@
 /* Deck Class */
 function Deck (includeJokers) {    
+    /* Begin Constructor */
     this.shuffle = shuffleDeck;
     this.shuffleStyle = 'default';
     this.cardsLeft = cardsLeft;
@@ -103,6 +104,20 @@ function Card(configuration) {
     this.toString = toString;
     setupCards(this.configuration);
 
+    this.KING = KING;
+    this.QUEEN = QUEEN;
+    this.JACK = JACK;
+    this.ACE = ACE;
+    this.JOKER = JOKER;
+    this.CLUBS = CLUBS;
+    this.DIAMONDS = DIAMONDS;
+    this.HEART = HEART;
+    this.SPADES = SPADES;
+    this.getSuit = getSuit;
+    this.getValue = getValue;
+    this.getSuitAsString = getSuitAsString;
+    setupCards(configuration);
+
     // helper functions
     function getSuit(){ return suit; }
     function getValue(){ return value; }
@@ -150,13 +165,16 @@ function Card(configuration) {
     function setupCards(config) {
         if (config) {
             console.log('configuring cards');
+    }
+    function setupCards(config) {
+        if (config) {
             if (config.suit != SPADES && config.suit != HEARTS && config.suit != DIAMONDS && 
                 config.suit != CLUBS && config.suit != JOKER)
                 console.log("Illegal playing card suit");
             if (config.suit != JOKER && (config.suit < 1 || config.suit > 13))
                 console.log("Illegal playing card value");
-            value = config.value;
-            suit = config.suit;
+            const value = config.value;
+            const suit = config.suit;
         }
         else {
             // Initialize instance private values
